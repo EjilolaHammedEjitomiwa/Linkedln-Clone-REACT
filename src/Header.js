@@ -1,6 +1,10 @@
 import React from "react";
 import "./Header.css";
 import HeaderOption from "./HeaderOption";
+import { useDispatch } from "react-redux";
+import { auth } from "./firebase";
+import { useSelector } from "react-redux";
+
 import HomeIcon from "@mui/icons-material/Home";
 import PeopleIcon from "@mui/icons-material/People";
 import WorkIcon from "@mui/icons-material/Work";
@@ -8,8 +12,16 @@ import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 import SearchIcon from "@mui/icons-material/Search";
+import { logout, selectUser } from "./features/counter/userSlice";
 
 function Header() {
+  const dispatch = useDispatch();
+
+  const logoutOfApp = () => {
+    dispatch(logout());
+    auth.signOut();
+  };
+
   return (
     <div className="header">
       <div className="header_left">
@@ -30,8 +42,9 @@ function Header() {
         <HeaderOption Icon={ChatBubbleIcon} title="Messaging" />
         <HeaderOption Icon={NotificationsActiveIcon} title="Notification" />
         <HeaderOption
-          avatar="https://www.vhv.rs/dpng/d/428-4287793_male-profile-round-circle-users-svg-png-icon.png"
+          avatar = {true}
           title="Profile"
+          onClick={logoutOfApp}
         />
       </div>
     </div>

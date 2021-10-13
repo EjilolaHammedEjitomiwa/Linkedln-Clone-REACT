@@ -1,13 +1,20 @@
 import React from "react";
 import "./HeaderOption.css";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useSelector } from "react-redux";
+import { selectUser } from "./features/counter/userSlice";
 
-function HeaderOption({ avatar, title, Icon }) {
+import { Avatar } from "@material-ui/core";
+
+function HeaderOption({ avatar, title, Icon, onClick }) {
+  const user = useSelector(selectUser);
+
   return (
-    <div className="headerOption">
+    <div className="headerOption" onClick={onClick}>
       {Icon && <Icon className="headerOption_icon" />}
       {avatar && (
-        <AccountCircleIcon className="headerOption_icon" src={avatar} />
+        <Avatar className="headerOption_icon" src={user?.photoUrl}>
+          {user?.email[0]}
+        </Avatar>
       )}
       <h3 className="headerOption_title">{title}</h3>
     </div>

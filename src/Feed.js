@@ -4,6 +4,8 @@ import InputOption from "./InputOption";
 import Post from "./Post";
 
 import firebase from "firebase";
+import { useSelector } from "react-redux";
+import { selectUser } from "./features/counter/userSlice";
 
 //material icons
 import CreateIcon from "@mui/icons-material/Create";
@@ -14,6 +16,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 
 import { db } from "./firebase";
 function Feed() {
+  const user = useSelector(selectUser);
   const [input, setInput] = React.useState("");
   const [posts, setPosts] = React.useState([]);
 
@@ -33,10 +36,10 @@ function Feed() {
   const sendPost = (e) => {
     e.preventDefault();
     db.collection("posts").add({
-      name: "Ejilola Hammed",
-      description: "This is a test post",
+      name: user.displayName,
+      description:user.email,
       message: input,
-      photoUrl: "",
+      photoUrl: user?.photoUrl || '',
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
