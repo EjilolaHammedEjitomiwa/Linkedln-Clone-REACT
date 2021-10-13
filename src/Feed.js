@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Feed.css";
 import InputOption from "./InputOption";
 import Post from "./Post";
+
+import firebase from "firebase";
+
 //material icons
 import CreateIcon from "@mui/icons-material/Create";
 import ImageIcon from "@mui/icons-material/Image";
@@ -9,15 +12,35 @@ import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 import ArticleIcon from "@mui/icons-material/Article";
 
+import { db } from "./firebase";
 function Feed() {
-  const [posts, setPost] = React.useState([]);
+  const [input, setInput] = React.useState("");
+  const [posts, setPosts] = React.useState([]);
+
+  React.useEffect(() => {
+    db.collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) =>
+        setPosts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        )
+      );
+  }, []);
 
   const sendPost = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    db.collection("posts").add({
+      name: "Ejilola Hammed",
+      description: "This is a test post",
+      message: input,
+      photoUrl: "",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
 
-
-    setPost
-
+    setInput("");
   };
 
   return (
@@ -26,7 +49,11 @@ function Feed() {
         <div className="feed_input">
           <CreateIcon />
           <form action="">
-            <input type="text" />
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+            />
             <button onClick={sendPost} type="submit">
               send
             </button>
@@ -49,13 +76,15 @@ function Feed() {
         </div>
       </div>
 
-      {posts.map((post) => {})}
-
-      <Post
-        name="Ejilola Hammed "
-        description="Android and Web Engineer"
-        message="Am happy to announced that I just joined Google as a Senior Backend Engineer !Ohohoh"
-      />
+      {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
+        <Post
+          key={id}
+          name={name}
+          description={description}
+          message={message}
+          photoUrl={photoUrl}
+        />
+      ))}
     </div>
   );
 }
