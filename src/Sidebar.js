@@ -3,7 +3,7 @@ import "./Sidebar.css";
 import { Avatar } from "@material-ui/core";
 
 import { useSelector } from "react-redux";
-import { login, logout, selectUser } from "./features/counter/userSlice";
+import { selectUser } from "./features/counter/userSlice";
 
 function Sidebar() {
   const user = useSelector(selectUser);

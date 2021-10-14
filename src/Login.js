@@ -9,6 +9,7 @@ function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [profilePic, setProfilePic] = React.useState("");
+
   const dispatch = useDispatch();
 
   const register = (e) => {
@@ -16,7 +17,7 @@ function Login() {
     if (!name) {
       return alert("Please enter your full name");
     }
-
+    
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((userAuth) => {
@@ -77,6 +78,7 @@ function Login() {
           value={profilePic}
           onChange={(e) => setProfilePic(e.target.value)}
         />
+
         <input
           type="email"
           placeholder="Email"
@@ -84,6 +86,7 @@ function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+
         <input
           type="password"
           placeholder="Password"
@@ -96,6 +99,7 @@ function Login() {
           Sign In
         </button>
       </form>
+
       <p>
         Not a member?{"  "}
         <span className="login_register" onClick={register}>
